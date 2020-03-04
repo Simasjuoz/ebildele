@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>uff</title>
+</head>
+<style>
+  
+#myInput {
+  width: 73%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 20px; /* Add some padding */
+  border: 1px solid black; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+#myUL {
+  /* Remove default list styling */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.a {
+  width: 50%;
+  border: 1px solid #ddd; /* Add a border to all links */
+  
+  background-color: #f6f6f6; /* Grey background color */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove default text underline */
+  font-size: 18px; /* Increase the font-size */
+  color: black; /* Add a black text color */
+  display: table; /* Make it into a block element to fill the whole list */
+  position: sticky;
+  left: 410px;
+  border: solid; color: black; box-shadow: brown;
+  padding-bottom: 115px;
+  margin-bottom: 30px;
+}
+.pic{
+  position: sticky;
+  right: 100%;
+  border: solid; color: black; box-shadow: brown;
+  width: 400px;
+  height: 400px;
+  display: inline-block;
+  vertical-align: top;
+}
+body {background-color: rgb(194, 194, 194);}
+.p{
+  padding-bottom: 45px;
+}
+
+.a:hover:not(.header) {
+  background-color: #eee; /* Add a hover effect to all links, except for headers */
+}
+
+  .sele{
+    margin-right: 40px;
+  }
+
+
+</style>
+<body>
+  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+  <br> 
+  <br>
+  <br>
+  <label for="Size">Choose a size:</label>
+
+  <select id="Size" class="sele">
+    <option value='-'>all"</option>
+    <option value='1'>1"</option>
+    <option value='11'>11"</option>
+    <option value='12'>12"</option>
+    <option value='13'>13"</option>
+    <option value='14'>14"</option>
+    <option value='15'>15"</option>
+    <option value='16'>16"</option>
+    <option value='17'>17"</option>
+    <option value='18'>18"</option>
+    <option value='19'>19"</option>
+    <option value='20'>20"</option>
+    <option value='21'>21"</option>
+    <option value='22'>22"</option>
+  </select>
+
+  <label for="Holes">Choose number of holes:</label>
+
+  <select id="Holes" class="sele">
+    <option value='-'>all</option>
+    <option value='3'>3</option>
+    <option value='4'>4</option>
+    <option value='5'>5</option>
+    <option value='6'>6</option>
+    <option value='8'>8</option>
+    <option value='9'>9</option>
+    <option value='10'>10</option>
+    <option value='12'>12</option>
+    <option value='16'>16</option>
+  </select>
+  <label for="PCD">PCD:</label>
+  <select id="PCD" class="sele">
+    <option value='-'>all</option>
+    <option value='98'>98</option>
+    <option value='99'>99</option>
+    <option value='100'>100</option>
+    <option value='105'>105</option>
+    <option value='108'>108</option>
+    <option value='109'>109</option>
+    <option value='110'>110</option>
+    <option value='112'>112</option>
+    <option value='114.3'>114.3</option>
+    <option value='115'>115</option>
+    <option value='118'>118</option>
+    <option value='120'>120</option>
+    <option value='127'>127</option>
+    <option value='130'>130</option>
+    <option value='135'>135</option>
+    <option value='139.7'>139.7</option>
+    <option value='150'>150</option>
+    <option value='160'>160</option>
+    <option value='165.1'>165.1</option>
+  </select>
+
+  <input type="button" value="filter" id="filter">
+  <input type="button" value="showall" id="showall">
+  <br>
+  <br>
+  <br>
+
+  <ul id="myUL">
+  </ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="filter.js"></script>
+<script src="mainshopsr.js"></script>
+
+</body>
+</html>

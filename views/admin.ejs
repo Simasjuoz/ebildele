@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <style>
+
+        #myInput {
+          width: 73%; /* Full-width */
+          font-size: 16px; /* Increase font-size */
+          padding: 12px 20px 12px 20px; /* Add some padding */
+          border: 1px solid black; /* Add a grey border */
+          margin-bottom: 12px; /* Add some space below the input */
+        }
+
+        #myUL {
+          /* Remove default list styling */
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .a {
+          width: 50%;
+          border: 1px solid #ddd; /* Add a border to all links */
+          
+          background-color: #f6f6f6; /* Grey background color */
+          padding: 12px; /* Add some padding */
+          text-decoration: none; /* Remove default text underline */
+          font-size: 18px; /* Increase the font-size */
+          color: black; /* Add a black text color */
+          display: table; /* Make it into a block element to fill the whole list */
+          position: sticky;
+          left: 410px;
+          border: solid; color: black; box-shadow: brown;
+          padding-bottom: 115px;
+          margin-bottom: 30px;
+        }
+        .pic{
+          position: sticky;
+          right: 100%;
+          border: solid; color: black; box-shadow: brown;
+          width: 400px;
+          height: 400px;
+          display: inline-block;
+          vertical-align: top;
+        }
+        body {background-color: rgb(194, 194, 194);}
+        .p{
+          padding-bottom: 45px;
+        }
+
+        .a:hover:not(.header) {
+          background-color: #eee; /* Add a hover effect to all links, except for headers */
+        }
+
+
+        #myForm{
+          text-align: center;
+        }
+
+        .file {
+        position: relative;
+        top: 150px;
+        font-family: calibri;
+        width: 150px;
+        padding: 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border: 1px dashed #BBB;
+        text-align: center;
+        background-color: #DDD;
+        cursor: pointer;
+}
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Admin</title>
+    </head>
+    <body>
+      <h1>Hi <%= name %></h1>
+      <form action="/logout?_method=DELETE" method="POST">
+        <button type="submit">Log Out</button>
+      </form>
+
+      
+      <form action="/file_upload" method = "POST" enctype="multipart/form-data" id="myForm">
+        <input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;">
+        <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+        <p><img id="output" width="200" /></p>
+        <input type="number" id="størrelse" placeholder="Størrelse: f.eks. 20">
+        <input type="number" id="huller" placeholder="antal af huller">
+        <input type="number" id="PCD" placeholder="PCD">
+        <input type="submit" id="button" value="upload">
+      </form>
+
+      <br>
+      <br>
+
+      <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+
+      <br>
+      <br>
+
+      <ul id="myUL">
+      </ul>
+
+          
+    </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      let image;
+      let loadFile = function(event) {
+        image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+      }
+
+      let button = document.getElementById("button");
+
+      button.onclick = function(){
+        let size = document.getElementById("størrelse").value
+        let holes = document.getElementById("huller").value
+        let pcd = document.getElementById("PCD").value
+        document.getElementById("myForm").submit();
+
+        let info = {size1: size, holes1: holes, pcd1: pcd}
+        console.log(info);
+        send(info);
+      };
+
+      async function send(data){
+        console.log("?")
+        let options = {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+
+        let response = await fetch('/sendimgdata', options);
+        let data1 = await response.json();
+        console.log(data1);
+      }
+
+
+    function add(størrelse, bil, lager, pic, n){
+      $('#'+n).html(`
+      <a href="#" style="display:inline-block;" class="a">
+
+            <p class="p">Størrelse: ${størrelse}"</p>
+            <p class="p">Huller: ${bil}</p>
+            <p class="p">PCD: ${lager}</p>
+          </a>
+          <a href="fælge.jpg"><img src="${pic}" class="pic"></a> <br>`);
+    }
+
+    let ul = document.getElementById("myUL");
+    async function load(){
+      const response = await fetch('/file_upload')
+      const data = await response.json();
+      console.log(data);
+      const response2 = await fetch('/sendimgdata')
+      const data2 = await response2.json();
+      console.log(data2);
+
+      
+      let items = 0;
+      for(items in data){
+        
+        const b64 = data[items].base64;
+        g = document.createElement('li');
+        g.setAttribute("id", `${items}`);
+        ul.appendChild(g)
+        add(data2[items].size1, data2[items].holes1, data2[items].pcd1, b64, items);
+        items++;
+      }
+
+
+    }
+    load();
+
+
+    let loadFile1 = function(event) {
+      let image = document.getElementById('output');
+      image.src = URL.createObjectURL(event.target.files[0]);
+    };
+
+    function myFunction() {
+      // Declare variables
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById('myInput');
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName('li');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+        } else {
+          li[i].style.display = "none";
+        }
+      }
+    }
+
+      
+      
+    
+    </script>
+  </html>
